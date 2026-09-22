@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>C.A.R.L.O.S= Catalogo de Arquetipos Rapidos para Logica de Objetos Suspeitos </title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@500;700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#fefeff; --paper2:#b0e28f; --ink:#1B2A3A; --ink-soft:#4C5C6B;
+  --line:#e6ba2a; --teal:#0F6E6E; --teal-deep:#0A4F4F; --amber:#B8842A;
+  --card:#FBFAF4; --danger:#A8442F; --radius:3px;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+  box-sizing:border-box;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#12181D; --paper2:#182027; --ink:#E9E4D6; --ink-soft:#9AA6AE;
+    --line:#2C3841; --teal:#4FBFBF; --teal-deep:#2F8F8F; --amber:#E0AE5C;
+    --card:#161E24; --danger:#E0705A;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#12181D; --paper2:#182027; --ink:#E9E4D6; --ink-soft:#9AA6AE;
+  --line:#2C3841; --teal:#4FBFBF; --teal-deep:#2F8F8F; --amber:#E0AE5C;
+  --card:#161E24; --danger:#E0705A;
+}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:'Inter',system-ui,sans-serif; line-height:1.5;
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size:28px 28px; background-attachment:local;
+}
+header{
+  padding:2.2rem 1.5rem 1.4rem; max-width:1100px; margin:0 auto;
+  border-bottom:2px solid var(--ink);
+}
+header h1{
+  font-family:'Source Serif 4',serif; font-weight:700; font-size:2.1rem;
+  margin:0 0 .3rem; letter-spacing:-.01em;
+}
+header p{color:var(--ink-soft); margin:0; max-width:52ch; font-size:.98rem}
+.toolbar{
+  max-width:1100px; margin:0 auto; padding:1.1rem 1.5rem 0;
+  display:flex; gap:.6rem; flex-wrap:wrap; align-items:center;
+}
+#search{
+  flex:1 1 220px; padding:.6rem .8rem; border:1.5px solid var(--ink);
+  background:var(--card); color:var(--ink); border-radius:var(--radius);
+  font-family:'Inter',sans-serif; font-size:.92rem;
+}
+#search:focus{outline:2px solid var(--teal); outline-offset:1px}
+.chip{
+  padding:.42rem .8rem; border:1.5px solid var(--line); background:transparent;
+  color:var(--ink-soft); border-radius:20px; font-size:.82rem; cursor:pointer;
+  font-family:'Inter',sans-serif; transition:border-color .15s, color .15s;
+}
+.chip:hover{border-color:var(--teal)}
+.chip.active{background:var(--ink); border-color:var(--ink); color:var(--paper)}
+main{max-width:1100px; margin:0 auto; padding:1.4rem 1.5rem 4rem}
+.grid{
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(270px,1fr));
+  gap:1rem;
+}
+.card{
+  background:var(--card); border:1.5px solid var(--line); border-radius:var(--radius);
+  padding:1rem 1.1rem; cursor:pointer; transition:border-color .15s;
+}
+.card:hover, .card:focus-visible{border-color:var(--teal)}
+.card .cat{font-size:.72rem; color:var(--teal); font-weight:600; text-transform:uppercase; letter-spacing:.04em}
+.card h3{font-family:'Source Serif 4',serif; font-size:1.05rem; margin:.25rem 0 .5rem; font-weight:700}
+.card .expr{
+  font-family:'IBM Plex Mono',monospace; font-size:1rem; color:var(--ink);
+  background:var(--paper2); padding:.4rem .6rem; border-radius:var(--radius);
+  display:inline-block;
+}
+.panel{
+  margin-top:.7rem; padding-top:.7rem; border-top:1px dashed var(--line);
+  display:none;
+}
+.card.open .panel{display:block}
+.field{margin-bottom:.55rem}
+.field label{
+  display:flex; justify-content:space-between; font-size:.78rem;
+  color:var(--ink-soft); margin-bottom:.2rem;
+}
+.field input{
+  width:100%; padding:.45rem .55rem; border:1px solid var(--line);
+  border-radius:var(--radius); background:var(--paper); color:var(--ink);
+  font-family:'IBM Plex Mono',monospace; font-size:.92rem;
+}
+.field input:focus{outline:1.5px solid var(--teal)}
+.result{
+  margin-top:.6rem; padding:.55rem .7rem; background:var(--teal-deep);
+  color:#fff; border-radius:var(--radius); font-family:'IBM Plex Mono',monospace;
+  font-size:.95rem; display:flex; justify-content:space-between; align-items:center;
+}
+.result.err{background:var(--danger)}
+.empty{color:var(--ink-soft); padding:2rem 0; text-align:center; font-size:.92rem}
+footer{max-width:1100px; margin:0 auto; padding:1rem 1.5rem 2.5rem; color:var(--ink-soft); font-size:.78rem}
+</style>
+</head>
+<body>
+<header>
+  <h1>Catálogo de Fórmulas</h1>
+  <p>Física e engenharia, organizadas por área. Abra qualquer fórmula, preencha as variáveis conhecidas e o resultado é calculado na hora.</p>
+</header>
+<div class="toolbar">
+  <input id="search" type="text" placeholder="Buscar fórmula, variável ou grandeza…">
+  <div id="chips" style="display:flex; gap:.5rem; flex-wrap:wrap"></div>
+</div>
+<main>
+  <div class="grid" id="grid"></div>
+  <div class="empty" id="empty" style="display:none">Nenhuma fórmula encontrada para essa busca.</div>
+</main>
+<footer>Constantes fixas: g = 9.81 m/s², R = 8.314 J/(mol·K), k = 8.99×10⁹ N·m²/C².</footer>
+
+<script>
+const FORMULAS = [
+{id:'newton2', cat:'Mecânica', name:"2ª Lei de Newton", expr:'F = m · a', out:{key:'F',label:'Força',unit:'N'},
+  vars:[{k:'m',l:'Massa',u:'kg'},{k:'a',l:'Aceleração',u:'m/s²'}], fn:v=>v.m*v.a},
+{id:'kin_v', cat:'Mecânica', name:'Velocidade (MRUV)', expr:'v = v₀ + a·t', out:{key:'v',label:'Velocidade final',unit:'m/s'},
+  vars:[{k:'v0',l:'Velocidade inicial',u:'m/s'},{k:'a',l:'Aceleração',u:'m/s²'},{k:'t',l:'Tempo',u:'s'}], fn:v=>v.v0+v.a*v.t},
+{id:'kin_s', cat:'Mecânica', name:'Deslocamento (MRUV)', expr:'s = v₀t + ½at²', out:{key:'s',label:'Deslocamento',unit:'m'},
+  vars:[{k:'v0',l:'Velocidade inicial',u:'m/s'},{k:'t',l:'Tempo',u:'s'},{k:'a',l:'Aceleração',u:'m/s²'}], fn:v=>v.v0*v.t+0.5*v.a*v.t*v.t},
+{id:'kin_v2', cat:'Mecânica', name:'Torricelli', expr:'v² = v₀² + 2as', out:{key:'v',label:'Velocidade final',unit:'m/s'},
+  vars:[{k:'v0',l:'Velocidade inicial',u:'m/s'},{k:'a',l:'Aceleração',u:'m/s²'},{k:'s',l:'Deslocamento',u:'m'}], fn:v=>Math.sqrt(Math.max(0,v.v0*v.v0+2*v.a*v.s))},
+{id:'ke', cat:'Mecânica', name:'Energia Cinética', expr:'Ec = ½mv²', out:{key:'Ec',label:'Energia cinética',unit:'J'},
+  vars:[{k:'m',l:'Massa',u:'kg'},{k:'v',l:'Velocidade',u:'m/s'}], fn:v=>0.5*v.m*v.v*v.v},
+{id:'pe', cat:'Mecânica', name:'Energia Potencial Gravitacional', expr:'Ep = mgh', out:{key:'Ep',label:'Energia potencial',unit:'J'},
+  vars:[{k:'m',l:'Massa',u:'kg'},{k:'h',l:'Altura',u:'m'}], fn:v=>v.m*9.81*v.h},
+{id:'mom', cat:'Mecânica', name:'Quantidade de Movimento', expr:'p = m·v', out:{key:'p',label:'Momento linear',unit:'kg·m/s'},
+  vars:[{k:'m',l:'Massa',u:'kg'},{k:'v',l:'Velocidade',u:'m/s'}], fn:v=>v.m*v.v},
+{id:'work', cat:'Mecânica', name:'Trabalho', expr:'W = F·d·cos θ', out:{key:'W',label:'Trabalho',unit:'J'},
+  vars:[{k:'F',l:'Força',u:'N'},{k:'d',l:'Distância',u:'m'},{k:'theta',l:'Ângulo',u:'°'}], fn:v=>v.F*v.d*Math.cos(v.theta*Math.PI/180)},
+{id:'power', cat:'Mecânica', name:'Potência', expr:'P = W / t', out:{key:'P',label:'Potência',unit:'W'},
+  vars:[{k:'W',l:'Trabalho',u:'J'},{k:'t',l:'Tempo',u:'s'}], fn:v=>v.W/v.t},
+{id:'centrip', cat:'Mecânica', name:'Força Centrípeta', expr:'Fc = mv² / r', out:{key:'Fc',label:'Força centrípeta',unit:'N'},
+  vars:[{k:'m',l:'Massa',u:'kg'},{k:'v',l:'Velocidade',u:'m/s'},{k:'r',l:'Raio',u:'m'}], fn:v=>v.m*v.v*v.v/v.r},
+{id:'ohm', cat:'Eletromagnetismo', name:'Lei de Ohm', expr:'V = I·R', out:{key:'V',label:'Tensão',unit:'V'},
+  vars:[{k:'I',l:'Corrente',u:'A'},{k:'R',l:'Resistência',u:'Ω'}], fn:v=>v.I*v.R},
+{id:'epower', cat:'Eletromagnetismo', name:'Potência Elétrica', expr:'P = V·I', out:{key:'P',label:'Potência',unit:'W'},
+  vars:[{k:'V',l:'Tensão',u:'V'},{k:'I',l:'Corrente',u:'A'}], fn:v=>v.V*v.I},
+{id:'coulomb', cat:'Eletromagnetismo', name:'Lei de Coulomb', expr:'F = k·q₁q₂ / r²', out:{key:'F',label:'Força elétrica',unit:'N'},
+  vars:[{k:'q1',l:'Carga 1',u:'C'},{k:'q2',l:'Carga 2',u:'C'},{k:'r',l:'Distância',u:'m'}], fn:v=>8.99e9*v.q1*v.q2/(v.r*v.r)},
+{id:'cap', cat:'Eletromagnetismo', name:'Capacitância', expr:'C = Q / V', out:{key:'C',label:'Capacitância',unit:'F'},
+  vars:[{k:'Q',l:'Carga',u:'C'},{k:'V',l:'Tensão',u:'V'}], fn:v=>v.Q/v.V},
+{id:'idealgas', cat:'Termodinâmica', name:'Gás Ideal', expr:'P = nRT / V', out:{key:'P',label:'Pressão',unit:'Pa'},
+  vars:[{k:'n',l:'Quantidade de matéria',u:'mol'},{k:'T',l:'Temperatura',u:'K'},{k:'V',l:'Volume',u:'m³'}], fn:v=>v.n*8.314*v.T/v.V},
+{id:'heat', cat:'Termodinâmica', name:'Calor Sensível', expr:'Q = m·c·ΔT', out:{key:'Q',label:'Calor',unit:'J'},
+  vars:[{k:'m',l:'Massa',u:'kg'},{k:'c',l:'Calor específico',u:'J/(kg·K)'},{k:'dT',l:'Variação de temperatura',u:'K'}], fn:v=>v.m*v.c*v.dT},
+{id:'wave', cat:'Ondas', name:'Velocidade de Onda', expr:'v = f·λ', out:{key:'v',label:'Velocidade',unit:'m/s'},
+  vars:[{k:'f',l:'Frequência',u:'Hz'},{k:'lambda',l:'Comprimento de onda',u:'m'}], fn:v=>v.f*v.lambda},
+{id:'pressure', cat:'Fluidos', name:'Pressão', expr:'P = F / A', out:{key:'P',label:'Pressão',unit:'Pa'},
+  vars:[{k:'F',l:'Força',u:'N'},{k:'A',l:'Área',u:'m²'}], fn:v=>v.F/v.A},
+{id:'density', cat:'Fluidos', name:'Densidade', expr:'ρ = m / V', out:{key:'rho',label:'Densidade',unit:'kg/m³'},
+  vars:[{k:'m',l:'Massa',u:'kg'},{k:'V',l:'Volume',u:'m³'}], fn:v=>v.m/v.V},
+{id:'stress', cat:'Engenharia', name:'Tensão Normal', expr:'σ = F / A', out:{key:'sigma',label:'Tensão',unit:'Pa'},
+  vars:[{k:'F',l:'Força axial',u:'N'},{k:'A',l:'Área da seção',u:'m²'}], fn:v=>v.F/v.A},
+{id:'young', cat:'Engenharia', name:'Módulo de Young', expr:'E = σ / ε', out:{key:'E',label:'Módulo de elasticidade',unit:'Pa'},
+  vars:[{k:'sigma',l:'Tensão',u:'Pa'},{k:'eps',l:'Deformação (adimensional)',u:''}], fn:v=>v.sigma/v.eps},
+{id:'equivalencia massa-energia', cat:'Relatividade', name:'Equivalência Massa-Energia', expr:'E = mc²', out:{key:'E',label:'Energia',unit:'J'},
+  vars:[{k:'m',l:'Massa',u:'kg'}], fn:v=>v.m*299792458*299792458}
+];
+
+const CATS = ['Todas', ...Array.from(new Set(FORMULAS.map(f=>f.cat)))];
+let activeCat = 'Todas';
+
+const chipsEl = document.getElementById('chips');
+CATS.forEach(c=>{
+  const b = document.createElement('button');
+  b.className = 'chip' + (c==='Todas' ? ' active' : '');
+  b.textContent = c;
+  b.onclick = ()=>{ activeCat = c; document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active')); b.classList.add('active'); render(); };
+  chipsEl.appendChild(b);
+});
+
+function fmt(n){
+  if(!isFinite(n)) return '—';
+  const abs = Math.abs(n);
+  if(abs !== 0 && (abs < 1e-3 || abs >= 1e6)) return n.toExponential(4);
+  return Number(n.toFixed(6)).toString();
+}
+
+function buildCard(f){
+  const card = document.createElement('div');
+  card.className = 'card'; card.tabIndex = 0;
+  card.innerHTML = `
+    <div class="cat">${f.cat}</div>
+    <h3>${f.name}</h3>
+    <div class="expr">${f.expr}</div>
+    <div class="panel">
+      ${f.vars.map(v=>`
+        <div class="field">
+          <label>${v.l}${v.u? ' ('+v.u+')':''}<span></span></label>
+          <input type="number" step="any" data-k="${v.k}" placeholder="0">
+        </div>`).join('')}
+      <div class="result" style="display:none"></div>
+    </div>`;
+  const toggle = ()=> card.classList.toggle('open');
+  card.addEventListener('click', (e)=>{ if(e.target.tagName!=='INPUT') toggle(); });
+  card.addEventListener('keydown', (e)=>{ if((e.key==='Enter'||e.key===' ') && e.target===card){ e.preventDefault(); toggle(); } });
+
+  const inputs = card.querySelectorAll('input');
+  const resultEl = card.querySelector('.result');
+  const compute = ()=>{
+    const vals = {};
+    let allFilled = true;
+    inputs.forEach(inp=>{
+      const n = parseFloat(inp.value);
+      if(inp.value === '' || isNaN(n)){ allFilled = false; }
+      vals[inp.dataset.k] = n;
+    });
+    if(!allFilled){ resultEl.style.display='none'; return; }
+    try{
+      const r = f.fn(vals);
+      if(!isFinite(r)){ resultEl.className='result err'; resultEl.textContent='Entradas inválidas para esta fórmula.'; resultEl.style.display='flex'; return; }
+      resultEl.className='result';
+      resultEl.innerHTML = `<span>${f.out.label}</span><strong>${fmt(r)} ${f.out.unit}</strong>`;
+      resultEl.style.display='flex';
+    }catch(err){
+      resultEl.className='result err'; resultEl.textContent='Não foi possível calcular.'; resultEl.style.display='flex';
+    }
+  };
+  inputs.forEach(inp=> inp.addEventListener('input', compute));
+  return card;
+}
+
+function render(){
+  const q = document.getElementById('search').value.trim().toLowerCase();
+  const grid = document.getElementById('grid');
+  grid.innerHTML = '';
+  const filtered = FORMULAS.filter(f=>{
+    const matchCat = activeCat==='Todas' || f.cat===activeCat;
+    const hay = (f.name+' '+f.cat+' '+f.expr+' '+f.vars.map(v=>v.l).join(' ')).toLowerCase();
+    const matchQ = !q || hay.includes(q);
+    return matchCat && matchQ;
+  });
+  document.getElementById('empty').style.display = filtered.length? 'none':'block';
+  filtered.forEach(f=> grid.appendChild(buildCard(f)));
+}
+document.getElementById('search').addEventListener('input', render);
+render();
+</script>
+</body>
+</html>
