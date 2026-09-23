@@ -165,9 +165,17 @@ const FORMULAS = [
 {id:'young', cat:'Engenharia', name:'Módulo de Young', expr:'E = σ / ε', out:{key:'E',label:'Módulo de elasticidade',unit:'Pa'},
   vars:[{k:'sigma',l:'Tensão',u:'Pa'},{k:'eps',l:'Deformação (adimensional)',u:''}], fn:v=>v.sigma/v.eps},
 {id:'equivalencia massa-energia', cat:'Relatividade', name:'Equivalência Massa-Energia', expr:'E = mc²', out:{key:'E',label:'Energia',unit:'J'},
-  vars:[{k:'m',l:'Massa',u:'kg'}], fn:v=>v.m*299792458*299792458}
-];
+  vars:[{k:'m',l:'Massa',u:'kg'}], fn:v=>v.m*299792458*299792458},
 
+{id:'transtorno-de-ansiedade-generalizada', name:'Transtorno de Ansiedade Generalizada', cat:'Psiquiatria', expr:'A ansiedade é persistente e excessiva, ocorrendo na maioria dos dias por pelo menos 6 meses.', out:{key:'diagnostico',label:'Diagnóstico',unit:''},
+    vars:[{k:'sintomas',l:'Sintomas',u:''}], fn:v=>v.sintomas.includes('ansiedade') && v.sintomas.includes('preocupação') && v.sintomas.includes('tensão') ? 'Possível GAD' : 'Não GAD'},
+     {id: 'psicopatia', name: 'Psicopatia', cat: 'Psiquiatria', expr: 'A psicopatia é caracterizada por traços de personalidade como falta de empatia, manipulação e comportamento impulsivo.', out: {key: 'diagnostico', label: 'Diagnóstico', unit: ''},
+    vars: [{k: 'traços', l: 'Traços de Personalidade', u: ''}], fn: v => v.traços.includes('falta de empatia') && v.traços.includes('manipulação') && v.traços.includes('comportamento impulsivo') ? 'Possível Psicopatia' : 'Não Psicopatia'},
+  {id: 'transtorno do espectro autista', name: 'Transtorno do Espectro Autista', cat: 'Psiquiatria', expr: 'O TEA é caracterizado por dificuldades na comunicação social e padrões restritos e repetitivos de comportamento.', out: {key: 'diagnostico', label: 'Diagnóstico', unit: ''},
+    vars: [{k: 'sintomas', l: 'Sintomas', u: ''}], fn: v => v.sintomas.includes('dificuldades na comunicação social') && v.sintomas.includes('padrões restritos e repetitivos de comportamento') ? 'Possível TEA' : 'Não TEA'},
+  {id: 'transtorno bipolar', name: 'Transtorno Bipolar', cat: 'Psiquiatria', expr: 'O transtorno bipolar é caracterizado por episódios de mania e depressão.', out: {key: 'diagnostico', label: 'Diagnóstico', unit: ''},
+    vars: [{k: 'episodios', l: 'Episódios', u: ''}], fn: v => v.episodios.includes('mania') && v.episodios.includes('depressão') ? 'Possível Transtorno Bipolar' : 'Não Transtorno Bipolar'}
+ ];
 const CATS = ['Todas', ...Array.from(new Set(FORMULAS.map(f=>f.cat)))];
 let activeCat = 'Todas';
 
